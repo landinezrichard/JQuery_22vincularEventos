@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8"/>
+		<title>22 Vincular y Desvincular Eventos</title>		
+		
+		<!--Hojas de estilo -->		
+		<style type="text/css">
+			body,html{
+				background:#FFF;
+				margin:0;
+				padding:0;
+			}
+						
+			#caja1{
+				background:#00ff00;
+				display:block;
+				height:100px;
+				margin:20px auto;
+				width:400px;
+			}			
+			
+		</style>
+		
+		<!--Scripts Aca -->
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js">		
+		</script>
+		<script type="text/javascript">
+			var color;
+			var contador=0;
+			
+			var f1=function(){
+				contador++;
+				//guardamos el color original del div
+				color=$(this).css("background");
+				//cambiamos el color
+				$(this).css("background","red");
+			};
+			
+			var f2=function(){
+				//retornamos el color original del div
+				$(this).css("background",color);
+				
+				//desvinculamos todos los eventos de mouseover despues de 3 veces
+			/*
+				if(contador >= 3){
+					$('#caja1').off("mouseover");
+				}
+			*/	
+				//desvinculamos solo el evento del cambio de color, el de impresión de consola sigue funcionando
+				if(contador >= 3){
+					$('#caja1').off("mouseover",f1);
+				}
+				
+			};
+			
+			var f3=function(){
+				console.log("Otra funcion");
+			};
+			
+			var f4=function(){
+				console.log("Una vez");
+			};
+			
+			$(document).on("ready",function(){
+				//vinculamos varios eventos con una sola selección
+				$('#caja1').on({
+					"mouseover":f1,
+					"mouseout":f2					
+				});
+				
+				//vinculamos otra vez el evento mouseover, pero para que imprima por consola
+				
+				$('#caja1').on("mouseover",f3);
+				
+				//para vincular un evento que se ejecuta solo una vez
+				$('#caja1').one("click",f4);
+				
+			});
+		
+		</script>
+		
+	</head>
+	<body>
+		<div id="caja1">
+			Texto
+		</div>	
+		
+	</body>
+</html>
